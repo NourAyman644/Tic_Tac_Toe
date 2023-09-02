@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.`d`';
+
+import 'package:flutter/material.dart';
 
 class Game extends StatelessWidget {
   const Game({super.key});
-  final
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-    );
+    return Scaffold();
   }
 }
