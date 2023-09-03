@@ -12,4 +12,5 @@ class AppColors {
   static const Color purpule = Colors.deepPurple;
   static const Color pink = Colors.pink;
   static const Color yellow = Colors.yellow;
+  static const Color babyblue = Color(0xFF150050);
 }

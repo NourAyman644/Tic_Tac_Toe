@@ -150,7 +150,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       if (_formkey.currentState!.validate()) {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return Game();
+                            return Game(
+                                playerX: playerx_controller.text,
+                                playerO: playery_controller.text);
                           },
                         ));
                       }
