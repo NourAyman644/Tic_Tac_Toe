@@ -8,6 +8,6 @@ class AppStrings {
   static const String o = "Player o";
   static const String start = "Start Game";
   static const String rest = "Rest Game";
-  //
+  static const String curr = "Current Player";
   static const String valid = "Please enter value";
 }

@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tic_tac/core/utils/app_images.dart';
 import 'package:tic_tac/core/utils/app_strings.dart';
-import 'package:tic_tac/game.dart';
+import 'package:tic_tac/featurs/screen/game.dart';
 
-import 'core/utils/AppColors.dart';
+import '../../core/utils/AppColors.dart';
 
 class PlayerScreen extends StatefulWidget {
   PlayerScreen({super.key});
@@ -99,7 +99,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 TextFormField(
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'please enter value';
+                      return 'Please enter value';
                     }
                     return null;
                   },

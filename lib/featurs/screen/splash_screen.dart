@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:tic_tac/core/utils/AppColors.dart';
 import 'package:tic_tac/core/utils/app_images.dart';
 import 'package:tic_tac/core/utils/app_strings.dart';
-import 'package:tic_tac/screen2.dart';
+import 'package:tic_tac/featurs/screen/screen2.dart';
 
 class splashScreen extends StatefulWidget {
   splashScreen({super.key});
@@ -19,7 +19,7 @@ class _splashScreenState extends State<splashScreen> {
     // TODO: implement initState
     super.initState();
     Future.delayed(
-        Duration(seconds: 7),
+        const Duration(seconds: 7),
         () => Navigator.push(
             context, MaterialPageRoute(builder: (context) => PlayerScreen())));
   }
