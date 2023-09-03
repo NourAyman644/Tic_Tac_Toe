@@ -98,7 +98,33 @@ class _GameState extends State<Game> {
                         color: AppColors.subTitleColor.withOpacity(0.10),
                       )),
                 );
-              })
+              }),
+          SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: AppColors.purpule, // Change the text color
+                elevation: 5, // Change the shadow elevation
+                padding: EdgeInsets.all(16.0), // Change the padding
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(10.0), // Change the border radius
+                  side: const BorderSide(
+                      color: AppColors.purpule,
+                      width: 2.0), // Change the border color and width
+                ),
+              ),
+              onPressed: () {},
+              child: Text(
+                AppStrings.rest,
+                style: GoogleFonts.poppins(
+                  color: AppColors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              )),
         ],
       ),
     )
