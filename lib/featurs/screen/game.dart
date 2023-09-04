@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tic_tac/featurs/cubit/game_cubit.dart';
 import 'package:tic_tac/featurs/cubit/game_state.dart';
 
@@ -22,9 +23,37 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
+  late SharedPreferences prefs;
+
+  void initState() {
+    super.initState();
+    initSharedPreferences();
+  }
+
+  Future<void> initSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  //  update player points when the game ends
+  void updatePlayerPoints(String winner) async {
+    if (winner == 'X') {
+      final int playerXPoints = prefs.getInt('playerXPoints') ?? 0;
+      await prefs.setInt('playerXPoints', playerXPoints + 1);
+    } else if (winner == 'O') {
+      final int playerOPoints = prefs.getInt('playerOPoints') ?? 0;
+      await prefs.setInt('playerOPoints', playerOPoints + 1);
+    }
+  }
+
+  Future<void> restPlayerPoints() async {
+    await prefs.setInt('playerXPoints', 0);
+    await prefs.setInt('playerOPoints', 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = GameCubit.getInstance(context);
+
     return BlocConsumer<GameCubit, GameState>(listener: (context, state) {
       if (state is FinishedWithWinner) {
         awesomeDialog(
@@ -35,6 +64,7 @@ class _GameState extends State<Game> {
             messageColor: Colors.green,
             dialogTitle: "Congratulations",
             gameEnd: true);
+        updatePlayerPoints(state.winner);
 
         print(state);
       } else if (state is FinishedWithoutWinner) {
@@ -63,7 +93,93 @@ class _GameState extends State<Game> {
         padding: const EdgeInsets.all(15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           children: [
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    // width: 120,
+                    height: 100,
+                    alignment: Alignment.center,
+                    curve: Curves.easeInOutBack,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: AppColors.pink),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          '${widget.playerX} ',
+                          style: GoogleFonts.poppins(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 30,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          ' ${prefs.getInt('playerXPoints') ?? 0}',
+                          style: GoogleFonts.poppins(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 30,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    // width: 120,
+                    height: 100,
+                    alignment: Alignment.center,
+                    curve: Curves.easeInOutBack,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: AppColors.babyblue,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${widget.playerO}  ',
+                          style: GoogleFonts.poppins(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 30,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          '${prefs.getInt('playerOPoints') ?? 0}',
+                          style: GoogleFonts.poppins(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 30,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -184,6 +300,7 @@ class _GameState extends State<Game> {
                   ),
                 ),
                 onPressed: () {
+                  restPlayerPoints();
                   cubit.gameInitial();
                 },
                 child: Text(
@@ -196,10 +313,7 @@ class _GameState extends State<Game> {
                 )),
           ],
         ),
-      )
-
-          //TextStyle(fontWeight: FontWeight.bold,fontSize: 22.5),)),
-          );
+      ));
     });
   }
 }
